@@ -1,0 +1,14 @@
+.home {
+  display: flex;
+  align-items: center;
+}
+
+.habit-list {
+  display: flex;
+  align-items: start;
+  flex-flow: column;
+}
+
+.list {
+  padding: 0;
+}
