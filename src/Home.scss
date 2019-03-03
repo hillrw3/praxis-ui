@@ -21,4 +21,10 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
+  margin-bottom: .5rem;
+
+  &.completed {
+    color: lightgrey;
+    text-decoration: line-through;
+  }
 }

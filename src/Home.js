@@ -10,6 +10,7 @@ export class Home extends React.Component {
     this.fetchHabits = this.fetchHabits.bind(this)
 
     this.state = {
+      newHabit: '',
       habits: {
         todo: [],
         completed: []
@@ -40,27 +41,51 @@ export class Home extends React.Component {
       .then(this.fetchHabits)
   }
 
+  addHabit = () => {
+    fetch(`${API_URL}/habits`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({habit: {title: this.state.newHabit}})
+    })
+      .then(() => {
+        this.setState({newHabit: ''})
+        this.fetchHabits()
+      })
+  }
+
+  onChange = (e) => {
+    this.setState({newHabit: e.target.value})
+  }
+
   render() {
     const {habits: {todo, completed}} = this.state
 
     return (
       <div className="home">
         <div className="habit-list">
-          <h4 className='header'>To Do</h4>
-          <ul className='list'>
-            {todo.map(habit => <div className="habit" key={habit.id}>
-              <span className="habit-title">{habit.title}</span>
-              <span className="habit-action">
-                <button onClick={() => this.completeHabit(habit)}>✓</button>
-              </span>
-            </div>)}
+          <h4 className='header'>Daily Habits</h4>
+          <span className="new-habit habit">
+            <input type="text" placeholder="Start a new habit" onChange={this.onChange} value={this.state.newHabit}/>
+            <button onClick={this.addHabit}>+</button>
+          </span>
+          <ul className='list todo'>
+            {todo.map(habit => (
+              <div className="habit" key={habit.id}>
+                <span className="habit-title">{habit.title}</span>
+                <span className="habit-action">
+                  <button onClick={() => this.completeHabit(habit)}>✓</button>
+                </span>
+              </div>
+            ))}
           </ul>
-
-          <h4 className='header'>Completed</h4>
-          <ul className='list'>
-            {completed.map(habit => <div key={habit.id}>
-              {habit.title}
-            </div>)}
+          <ul className='list completed'>
+            {completed.map(habit => (
+              <div className="habit completed" key={habit.id}>
+                <span className="habit-title">{habit.title}</span>
+              </div>
+            ))}
           </ul>
         </div>
       </div>
