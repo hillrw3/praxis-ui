@@ -1,14 +1,24 @@
 .home {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
 .habit-list {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   flex-flow: column;
+  max-width: 20rem;
+  min-width: 20rem;
 }
 
 .list {
   padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.habit {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }

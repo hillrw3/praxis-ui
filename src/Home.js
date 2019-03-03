@@ -48,9 +48,11 @@ export class Home extends React.Component {
         <div className="habit-list">
           <h4 className='header'>To Do</h4>
           <ul className='list'>
-            {todo.map(habit => <div key={habit.id}>
-              {habit.title}
-              <button onClick={() => this.completeHabit(habit)}>✓</button>
+            {todo.map(habit => <div className="habit" key={habit.id}>
+              <span className="habit-title">{habit.title}</span>
+              <span className="habit-action">
+                <button onClick={() => this.completeHabit(habit)}>✓</button>
+              </span>
             </div>)}
           </ul>
 
