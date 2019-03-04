@@ -55,6 +55,13 @@ export class Home extends React.Component {
       })
   }
 
+  deleteHabit = (habit) => {
+    fetch(`${API_URL}/habits/${habit.id}`, {
+      method: 'DELETE',
+    })
+      .then(this.fetchHabits)
+  }
+
   onChange = (e) => {
     this.setState({newHabit: e.target.value})
   }
@@ -74,8 +81,9 @@ export class Home extends React.Component {
             {todo.map(habit => (
               <div className="habit" key={habit.id}>
                 <span className="habit-title">{habit.title}</span>
-                <span className="habit-action">
+                <span className="habit-actions">
                   <button onClick={() => this.completeHabit(habit)}>✓</button>
+                  <button onClick={() => this.deleteHabit(habit)}>X</button>
                 </span>
               </div>
             ))}
@@ -84,6 +92,9 @@ export class Home extends React.Component {
             {completed.map(habit => (
               <div className="habit completed" key={habit.id}>
                 <span className="habit-title">{habit.title}</span>
+                <span className="habit-actions">
+                  <button onClick={() => this.deleteHabit(habit)}>X</button>
+                </span>
               </div>
             ))}
           </ul>
