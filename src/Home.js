@@ -66,6 +66,10 @@ export class Home extends React.Component {
     this.setState({newHabit: e.target.value})
   }
 
+  handleKeyPress = (e) => {
+    if (e.key === 'Enter') this.addHabit()
+  }
+
   render() {
     const {habits: {todo, completed}} = this.state
 
@@ -74,7 +78,11 @@ export class Home extends React.Component {
         <div className="habit-list">
           <h4 className='header'>Daily Habits</h4>
           <span className="new-habit habit">
-            <input type="text" placeholder="Start a new habit" onChange={this.onChange} value={this.state.newHabit}/>
+            <input type="text"
+                   placeholder="Start a new habit"
+                   onChange={this.onChange}
+                   onKeyPress={this.handleKeyPress}
+                   value={this.state.newHabit}/>
             <button onClick={this.addHabit}>+</button>
           </span>
           <ul className='list todo'>
