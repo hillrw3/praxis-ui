@@ -1,14 +1,11 @@
 import React from "react"
 import './Home.scss'
 
-const API_URL = process.env.API_URL || "http://localhost:3000"
+const API_URL = process.env.API_URL || "http://localhost:3000/api"
 
 export class Home extends React.Component {
   constructor(props) {
     super(props)
-    this.completeHabit = this.completeHabit.bind(this)
-    this.fetchHabits = this.fetchHabits.bind(this)
-
     this.state = {
       newHabit: '',
       habits: {
@@ -22,7 +19,7 @@ export class Home extends React.Component {
     this.fetchHabits()
   }
 
-  fetchHabits() {
+  fetchHabits = () => {
     fetch(`${API_URL}/progress_report`)
       .then(response => response.json())
       .then(response => {
@@ -31,12 +28,11 @@ export class Home extends React.Component {
   }
 
   completeHabit = (habit) => {
-    fetch(`${API_URL}/records`, {
+    fetch(`${API_URL}/habits/${habit.id}/complete`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({record: {habit_id: habit.id}})
+      }
     })
       .then(this.fetchHabits)
   }
@@ -78,31 +74,39 @@ export class Home extends React.Component {
         <div className="habit-list">
           <h4 className='header'>Daily Habits</h4>
           <span className="new-habit habit">
-            <input type="text"
-                   placeholder="Start a new habit"
-                   onChange={this.onChange}
-                   onKeyPress={this.handleKeyPress}
-                   value={this.state.newHabit}/>
-            <button onClick={this.addHabit}>+</button>
+            <div className="habit-title-and-actions">
+              <input type="text"
+                     placeholder="Start a new habit"
+                     onChange={this.onChange}
+                     onKeyPress={this.handleKeyPress}
+                     value={this.state.newHabit}/>
+              <button onClick={this.addHabit}>+</button>
+            </div>
           </span>
           <ul className='list todo'>
             {todo.map(habit => (
               <div className="habit" key={habit.id}>
-                <span className="habit-title">{habit.title}</span>
-                <span className="habit-actions">
+                <div className="habit-title-and-actions">
+                  <span className="habit-title">{habit.title}</span>
+                  <span className="habit-actions">
                   <button onClick={() => this.completeHabit(habit)}>✓</button>
                   <button onClick={() => this.deleteHabit(habit)}>X</button>
                 </span>
+                </div>
+                <div className="current-streak">Current streak: {habit.current_streak}</div>
               </div>
             ))}
           </ul>
           <ul className='list completed'>
             {completed.map(habit => (
               <div className="habit completed" key={habit.id}>
-                <span className="habit-title">{habit.title}</span>
-                <span className="habit-actions">
-                  <button onClick={() => this.deleteHabit(habit)}>X</button>
-                </span>
+                <div className="habit-title-and-actions">
+                  <span className="habit-title">{habit.title}</span>
+                  <span className="habit-actions">
+                    <button onClick={() => this.deleteHabit(habit)}>X</button>
+                  </span>
+                </div>
+                <div className="current-streak">Current streak: {habit.current_streak}</div>
               </div>
             ))}
           </ul>
